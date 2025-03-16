@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Runner</title>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Runner</title>
+    <style>
+        .topnav {
+            overflow: hidden;
+            background-color: #666CB7;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .topnav a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+            transition: background-color 0.3s;
+        }
+
+        .topnav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .topnav a.active {
+            background-color: #769DD0;
+            color: white;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 18px;
+            color: #555;
+        }
+
+        .emotion {
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script>
+        function runGame(game) {
+            fetch(`/run/${game}`)
+                .then(response => response.json())
+                .then(data => {
+                    alert("Game Output: " + data.output);
+                })
+                .catch(error => console.error("Error:", error));
+        }
+    </script>
+</head>
+<body>
+    <div class="topnav">
+        <a class="active" href="/">Home</a>
+        <a href="journal.html">Journaling</a>
+        <a href="game">Games</a>
+        <a href="account">Account</a>
+    </div>
+
+    <div class="container">
+    <h1>Recommended Game</h1>
+    <p>Your detected emotion: <strong>{{ result }}</strong></p>
+    
+    <div class="buttons"
+    {% if result == "sad" %}
+    <button onclick="runGame('relaxation')">Run Relaxation Game</button>
+    {% elif result == "fear" %}
+    <button onclick="runGame('focus')">Run Focus Game</button>   
+    {% elif result == "anger" %}
+    <button onclick="runGame('empowerment')">Run Empowerment Game</button>
+    {% else %}
+        <button onclick="runGame('empowerment')">Run Empowerment Game</button>
+        <button onclick="runGame('relaxation')">Run Relaxation Game</button>
+        <button onclick="runGame('focus')">Run Focus Game</button>
+    {% endif %}
+    </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Journal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #666CB7, #769DD0, #5FC0AE);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .journal-container {
+            width: 90%;
+            max-width: 1000px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin: 20px 0;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #666CB7;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .date {font-size: 24px; font-weight: bold; color: #17005C;}
+        .month {margin-left: 5px;}
+        .weekdays {display: flex; gap: 15px;}
+        .weekday {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #17005C;
+        }
+        .weekday.active {
+            border: 2px solid #17005C;
+            border-radius: 50%;
+            background-color: rgba(102, 108, 183, 0.2);
+        }
+        .main-content {display: flex; gap: 20px;}
+        .left-column {flex: 3;}
+        .right-column {flex: 1; display: flex; flex-direction: column; gap: 20px;}
+        .mood-prompt {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #17005C;
+            text-align: center;
+        }
+        .mood-input {
+            width: 100%;
+            height: 400px;
+            background-color: #EEF1DA;
+            border: 1px solid #C7D9DD;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 16px;
+            resize: none;
+            color: #000000;
+            box-sizing: border-box;
+        }
+        .mood-input:focus {
+            outline: none;
+            border-color: #666CB7;
+            box-shadow: 0 0 5px rgba(102, 108, 183, 0.5);
+        }
+        .quote-box {
+            background-color: #C7D9DD;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .quote-box::after {
+            content: "";
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 40px;
+            height: 40px;
+            background-color: #5FC0AE;
+            transform: rotate(45deg);
+            z-index: 1;
+        }
+        .quote-header {
+            color: #17005C;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .quote-content {
+            color: #17005C;
+            font-style: italic;
+            font-size: 16px;
+            position: relative;
+            z-index: 2;
+        }
+        .music-player {
+            background-color: #C7D9DD;
+            border-radius: 10px;
+            padding: 15px;
+        }
+        .music-header {
+            color: #17005C;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .music-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            padding: 10px 0;
+            border-top: 1px solid #769DD0;
+        }
+        .music-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: #17005C;
+            transition: transform 0.2s;
+        }
+        .music-btn:hover {transform: scale(1.2);}
+        .play-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #769DD0;
+            color: #EEF1DA;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .song-info {
+            text-align: center;
+            color: #17005C;
+            font-size: 14px;
+            margin: 10px 0;
+            min-height: 18px;
+        }
+        .music-library {margin-top: 10px;}
+        .word-count {
+            text-align: right;
+            font-size: 14px;
+            color: #666CB7;
+            margin-top: 5px;
+        }
+        .mood-history-btn, .add-song-btn {
+            background-color: #666CB7;
+            color: #EEF1DA;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-size: 14px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .song-form {
+            margin-top: 10px;
+            display: none;
+        }
+        .song-form input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 5px;
+            border: 1px solid #769DD0;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .song-form button {
+            background-color: #5FC0AE;
+            color: #EEF1DA;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-size: 14px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .progress-bar {
+            height: 4px;
+            background-color: #EEF1DA;
+            width: 100%;
+            margin: 5px 0;
+            border-radius: 2px;
+        }
+        .progress {
+            height: 100%;
+            background-color: #5FC0AE;
+            width: 0;
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+        .timestamps {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #17005C;
+        }
+        @media (max-width: 768px) {
+            .main-content {flex-direction: column;}
+            .right-column {margin-top: 20px;}
+            .weekdays {gap: 10px;}
+            .weekday {width: 25px; height: 25px; font-size: 12px;}
+        }
+        .topnav {
+            overflow: hidden;
+            background-color: #666CB7;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .topnav a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+            transition: background-color 0.3s;
+        }
+
+        .topnav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .topnav a.active {
+            background-color: #769DD0;
+            color: white;
+        }
+        
+        body {
+            padding-top: 50px; 
+        }
+        
+        .journal-container {
+            margin-top: 30px; 
+        }
+    </style>
+</head>
+<body>
+    <div class="topnav">
+        <a class="active" href="/">Home</a>
+        <a href="journal.html">Journaling</a>
+        <a href="game">Games</a>
+        <a href="account">Account</a>
+    </div>
+
+    <div class="journal-container">
+        <div class="header">
+            <div class="date">
+                <span id="dayNumber"></span>
+                <span class="month" id="month"></span>
+            </div>
+            <div class="weekdays">
+                <div class="weekday" id="mon">M</div>
+                <div class="weekday" id="tue">T</div>
+                <div class="weekday" id="wed">W</div>
+                <div class="weekday" id="thu">T</div>
+                <div class="weekday" id="fri">F</div>
+                <div class="weekday" id="sat">S</div>
+                <div class="weekday" id="sun">S</div>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="left-column">
+                <div class="mood-prompt">HOW ARE WE FEELING TODAY?</div>
+                <textarea class="mood-input" id="moodInput" placeholder="Write your thoughts here..."></textarea>
+                <div class="word-count" id="wordCount">0 words</div>
+                
+                <div class="mood-history">
+                    <button class="mood-history-btn" id="saveButton" " >Save Journal Entry</button>
+                    <button class="mood-history-btn" id="historyButton">View Past Entries</button>
+                </div>
+            </div>
+            
+            <div class="right-column">
+                <div class="quote-box">
+                    <div class="quote-header">Quote of the Day:</div>
+                    <div class="quote-content" id="quoteContent">"Believe in yourself."</div>
+                </div>
+                
+                <div class="music-player">
+                    <div class="music-header">MUSIC</div>
+                    <div class="song-info" id="songInfo"></div>
+                    <div class="progress-bar">
+                        <div class="progress" id="progressBar"></div>
+                    </div>
+                    <div class="timestamps">
+                        <span id="currentTime">0:00</span>
+                        <span id="duration">0:00</span>
+                    </div>
+                    <div class="music-controls">
+                        <button class="music-btn" id="shuffleBtn">⟳</button>
+                        <button class="music-btn" id="prevBtn">⏮</button>
+                        <button class="music-btn play-btn" id="playBtn">▶</button>
+                        <button class="music-btn" id="nextBtn">⏭</button>
+                        <button class="music-btn" id="repeatBtn">🔁</button>
+                    </div>
+                    
+                    <div class="music-library">
+                        <button class="add-song-btn" id="addSongBtn">Add Your Own Music</button>
+                        <div class="song-form" id="songForm">
+                            <input type="text" id="songTitle" placeholder="Song Title">
+                            <input type="file" id="songFile" accept="audio/*">
+                            <button id="submitSong">Add Song</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="audioPlayer"></audio>
+
+    <script>
+        let songs = [
+            { title: "Calm Meditation", src: "journal_alternative/calm_meditation.mp3" },
+            { title: "Peaceful Morning", src: "journal_alternative/peaceful_morning.mp3" },
+            { title: "Relaxing Sounds", src: "journal_alternative/relaxing_sounds.mp3" }
+        ];
+        let currentSongIndex = 0;
+        let isPlaying = false;
+        let isRepeat = false;
+        let isShuffle = false;
+        let audioPlayer;
+        
+        const quotes = [
+            "Believe in yourself.", "The only limit is your mind.", "Your attitude determines your direction.",
+            "Every day is a new beginning.", "Focus on the journey, not the destination.",
+            "You are stronger than you think.", "Small steps lead to big changes.",
+            "Today is your opportunity to build tomorrow.", "Be the change you wish to see in the world.",
+            "Your potential is endless.", "Happiness is a choice.", "What you think, you become.",
+            "Your only limit is you.", "Make today count.", "Dream big, work hard.",
+            "The best time to start was yesterday. The next best time is now.",
+            "Success is the sum of small efforts repeated day in and day out.",
+            "Every moment is a fresh beginning.", "Believe you can and you're halfway there.",
+            "You don't have to be perfect to be amazing.",
+            "The journey of a thousand miles begins with a single step.",
+            "Your thoughts become your words, your words become your actions.",
+            "Whatever you do, do it with all your heart.", "Don't wait for opportunity. Create it.",
+            "The harder you work for something, the greater you'll feel when you achieve it.",
+            "Self-care is how you take your power back.",
+            "It's not about being the best. It's about being better than you were yesterday.",
+            "You are capable of more than you know.",
+            "Every day may not be good, but there is something good in every day.",
+            "The secret of getting ahead is getting started."
+        ];
+        
+        // Shorthand for getElementById
+        const $ = id => document.getElementById(id);
+        
+        // Time formatter
+        const formatTime = seconds => {
+            const min = Math.floor(seconds / 60);
+            const sec = Math.floor(seconds % 60);
+            return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+        };
+        
+        // Update date display and highlight current day
+        function updateDate() {
+            const now = new Date();
+            const dayMap = { 1: 'mon', 2: 'tue', 3: 'wed', 4: 'thu', 5: 'fri', 6: 'sat', 0: 'sun' };
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            
+            $('dayNumber').textContent = now.getDate();
+            $('month').textContent = monthNames[now.getMonth()];
+            
+            document.querySelectorAll('.weekday').forEach(day => day.classList.remove('active'));
+            $(dayMap[now.getDay()]).classList.add('active');
+        }
+        
+        // Update the daily quote
+        function updateQuote() {
+            const now = new Date();
+            const dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+            $('quoteContent').textContent = `"${quotes[dayOfYear % quotes.length]}"`;
+        }
+        
+        // Loads saved songs from localStorage
+        function loadSongs() {
+            try {
+                const storedSongs = localStorage.getItem('journalSongs');
+                if (storedSongs) {
+                    const parsedSongs = JSON.parse(storedSongs);
+                    if (Array.isArray(parsedSongs) && parsedSongs.length > 0) {
+                        // Keeps default songs and adds any saved ones
+                        const defaultSongs = songs.slice();
+                        parsedSongs.filter(song => !song.isUserSong).forEach(savedSong => {
+                            if (!defaultSongs.some(s => s.title === savedSong.title)) {
+                                defaultSongs.push(savedSong);
+                            }
+                        });
+                        songs = defaultSongs;
+                        if (songs.length > 0) updateSongInfo();
+                    }
+                }
+            } catch (e) {
+                console.error("Error loading songs:", e);
+            }
+        }
+        
+        //// Toggles play/pause buttons
+        function togglePlay() {
+            if (!audioPlayer.src && songs.length > 0) {
+                audioPlayer.src = songs[currentSongIndex].src;
+                updateSongInfo();
+            }
+            
+            if (isPlaying) {
+                audioPlayer.pause();
+                $('playBtn').textContent = '▶';
+            } else {
+                audioPlayer.play().catch(e => {
+                    console.error("Audio play failed:", e);
+                    alert("Can't play this track. Try adding some audio files.");
+                });
+                $('playBtn').textContent = '⏸';
+            }
+            isPlaying = !isPlaying;
+        }
+        
+        // Plays next song in playlist 
+        function playNextSong() {
+            if (songs.length === 0) return;
+            currentSongIndex = isShuffle ? 
+                Math.floor(Math.random() * songs.length) : 
+                (currentSongIndex + 1) % songs.length;
+            
+            audioPlayer.src = songs[currentSongIndex].src;
+            updateSongInfo();
+            if (isPlaying) audioPlayer.play().catch(e => console.error("Audio play failed:", e));
+        }
+        
+        // Plays previous song 
+        function playPrevSong() {
+            if (songs.length === 0) return;
+            currentSongIndex = isShuffle ? 
+                Math.floor(Math.random() * songs.length) : 
+                (currentSongIndex - 1 + songs.length) % songs.length;
+            
+            audioPlayer.src = songs[currentSongIndex].src;
+            updateSongInfo();
+            if (isPlaying) audioPlayer.play().catch(e => console.error("Audio play failed:", e));
+        }
+        
+        // Toggle shuffle mode
+        function toggleShuffle() {
+            isShuffle = !isShuffle;
+            $('shuffleBtn').style.color = isShuffle ? '#5FC0AE' : '#17005C';
+        }
+        
+        // Toggle repeat mode
+        function toggleRepeat() {
+            isRepeat = !isRepeat;
+            $('repeatBtn').style.color = isRepeat ? '#5FC0AE' : '#17005C';
+            audioPlayer.loop = isRepeat;
+        }
+        
+        // Updates song title display
+        function updateSongInfo() {
+            $('songInfo').textContent = songs.length > 0 ? songs[currentSongIndex].title : "No songs available";
+        }
+        
+        // Updates progress bar during playback
+        function updateProgressBar() {
+            if (audioPlayer.duration) {
+                const percentage = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                $('progressBar').style.width = `${percentage}%`;
+                $('currentTime').textContent = formatTime(audioPlayer.currentTime);
+                $('duration').textContent = formatTime(audioPlayer.duration);
+            }
+        }
+        
+        // Adds user custom song
+        function addUserSong() {
+            const songTitle = $('songTitle').value.trim();
+            const songFile = $('songFile').files[0];
+            
+            if (!songTitle || !songFile) {
+                alert("Please enter a song title and select an audio file.");
+                return;
+            }
+            
+            // Creates blob URL for the uploaded file
+            const songURL = URL.createObjectURL(songFile);
+            const newSong = { title: songTitle, src: songURL };
+            songs.push(newSong);
+            
+            // Remembers this song for later
+            try {
+                const songsToStore = songs.map(song => {
+                    return song.src.startsWith('blob:') ? 
+                        { title: song.title, isUserSong: true } : song;
+                });
+                localStorage.setItem('journalSongs', JSON.stringify(songsToStore));
+            } catch (e) {
+                console.error("Error saving songs:", e);
+            }
+            
+            // Resets form
+            $('songTitle').value = '';
+            $('songFile').value = '';
+            $('songForm').style.display = 'none';
+            alert(`Song "${songTitle}" added successfully!`);
+            
+            if (!audioPlayer.src || audioPlayer.src === '') {
+                currentSongIndex = songs.length - 1;
+                audioPlayer.src = songURL;
+                updateSongInfo();
+            }
+        }
+        
+        // Counts words in journal entry
+        function updateWordCount() {
+            const text = $('moodInput').value;
+            const wordCount = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+            const wordCountEl = $('wordCount');
+            wordCountEl.textContent = `${wordCount} words`;
+            wordCountEl.style.color = (wordCount > 0 && (wordCount < 30 || wordCount > 500)) ? 
+                '#FF0000' : '#666CB7';
+        }
+        
+        // Saves journal entry to local storage
+        function saveJournalEntry() {
+            const text = document.getElementById('moodInput').value.trim();
+            if (!text) {
+                alert("Please write something before saving.");
+                return;
+            }
+            
+            const now = new Date();
+            const entryDate = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}`;
+            const entryTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+            
+            const entry = {
+                date: entryDate,
+                time: entryTime,
+                text: text,
+                timestamp: now.getTime()
+            };
+            
+            try {
+        // Retrieve existing entries from localStorage
+        let entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+
+        // Add new entry
+        entries.push(entry);
+        localStorage.setItem('journalEntries', JSON.stringify(entries));
+
+        result = entry[text]
+        window.location.href = `/game?result=${encodeURIComponent(result)}`;
+
+        alert("Journal entry saved successfully!");
+        document.getElementById('moodInput').value = ''; // Clear input field
+
+        
+    } catch (e) {
+        console.error("Error saving entry:", e);
+        alert("Failed to save entry. Local storage might be full.");
+    }
+}
+        // Shows journal entry history
+        function viewJournalHistory() {
+            try {
+                let entries = [];
+                const storedEntries = localStorage.getItem('journalEntries');
+                if (storedEntries) entries = JSON.parse(storedEntries);
+                
+                if (entries.length === 0) {
+                    alert("No journal entries found.");
+                    return;
+                }
+                
+                // Sorts by newest first
+                entries.sort((a, b) => b.timestamp - a.timestamp);
+                
+                // Creates popup for viewing entries
+                const popup = document.createElement('div');
+                popup.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background-color: #EEF1DA;
+                    padding: 20px;
+                    border-radius: 10px;
+                    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+                    max-width: 80%;
+                    max-height: 80vh;
+                    overflow: auto;
+                    z-index: 1000;
+                `;
+                
+                // Adds close button
+                const closeBtn = document.createElement('button');
+                closeBtn.textContent = 'Close';
+                closeBtn.style.cssText = `
+                    background-color: #666CB7;
+                    color: #EEF1DA;
+                    border: none;
+                    border-radius: 5px;
+                    padding: 8px 15px;
+                    cursor: pointer;
+                    margin-top: 15px;
+                `;
+                closeBtn.onclick = () => document.body.removeChild(popup);
+                
+                // Adds entries to popup
+                const entriesHTML = entries.map(entry => `
+                    <div style="margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #769DD0;">
+                        <div style="color: #17005C; font-weight: bold;">${entry.date} at ${entry.time}</div>
+                        <div style="margin-top: 5px; white-space: pre-wrap;">${entry.text}</div>
+                    </div>
+                `).join('');
+                
+                popup.innerHTML = `<h2 style="color: #17005C; margin-top: 0;">Journal History</h2>${entriesHTML}`;
+                popup.appendChild(closeBtn);
+                document.body.appendChild(popup);
+            } catch (e) {
+                console.error("Error loading entries:", e);
+                alert("Error loading journal entries.");
+            }
+        }
+        
+        // Loads today's entry if one exists
+        function loadTodayEntry() {
+            try {
+                const storedEntries = localStorage.getItem('journalEntries');
+                if (!storedEntries) return;
+                
+                const entries = JSON.parse(storedEntries);
+                if (entries.length === 0) return;
+                
+                const now = new Date();
+                const today = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}`;
+                
+                // Gets most recent entry from today
+                const todayEntry = entries
+                    .filter(entry => entry.date === today)
+                    .sort((a, b) => b.timestamp - a.timestamp)[0];
+                
+                if (todayEntry) {
+                    $('moodInput').value = todayEntry.text;
+                    updateWordCount();
+                }
+            } catch (e) {
+                console.error("Error loading today's entry:", e);
+            }
+        }
+        
+        // Sets everything up when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            audioPlayer = $('audioPlayer');
+            
+            // Initial setup
+            updateDate();
+            updateQuote();
+            loadSongs();
+            updateSongInfo();
+            updateProgressBar();
+            
+            // Music player event listeners
+            $('playBtn').addEventListener('click', togglePlay);
+            $('nextBtn').addEventListener('click', playNextSong);
+            $('prevBtn').addEventListener('click', playPrevSong);
+            $('shuffleBtn').addEventListener('click', toggleShuffle);
+            $('repeatBtn').addEventListener('click', toggleRepeat);
+            
+            // Audio player event listeners
+            audioPlayer.addEventListener('timeupdate', updateProgressBar);
+            audioPlayer.addEventListener('ended', () => { if (!isRepeat) playNextSong(); });
+            
+            // Click on progress bar to seek
+            document.querySelector('.progress-bar').addEventListener('click', function(e) {
+                if (audioPlayer.duration) {
+                    audioPlayer.currentTime = (e.offsetX / this.offsetWidth) * audioPlayer.duration;
+                }
+            });
+            
+            // Add song form toggle
+            $('addSongBtn').addEventListener('click', () => {
+                const form = $('songForm');
+                form.style.display = form.style.display === 'none' || form.style.display === '' ? 'block' : 'none';
+            });
+            $('submitSong').addEventListener('click', addUserSong);
+            
+            // Journal functionality
+            $('moodInput').addEventListener('input', updateWordCount);
+            updateWordCount();
+            $('saveButton').addEventListener('click', saveJournalEntry);
+            $('historyButton').addEventListener('click', viewJournalHistory);
+            loadTodayEntry();
+            
+            // Update date/quote at midnight
+            const now = new Date();
+            const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+            const timeUntilMidnight = tomorrow - now;
+            
+            setTimeout(() => {
+                updateDate();
+                updateQuote();
+                setInterval(() => {
+                    updateDate();
+                    updateQuote();
+                }, 24 * 60 * 60 * 1000);
+            }, timeUntilMidnight);//updates the quote, and date every day 
+        });
+    </script>
+</body>
+</html>

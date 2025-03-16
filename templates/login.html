@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive Dog Form</title>
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Stylesheet -->
+    <style>
+      * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+  body {
+    background-color: #A3D2CA;
+  }
+  .container {
+    height: 31.25em;
+    width: 31.25em;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+  }
+  form {
+    width: 23.75em;
+    height: 18.75em;
+    background-color: #F5EFE6;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: calc(50% + 3.1em);
+    left: 50%;
+    padding: 0 3.1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 0.5em;
+  }
+  form label {
+    display: block;
+    margin-bottom: 0.2em;
+    font-weight: 600;
+    color: #5E454B;
+  }
+  form input {
+    font-size: 0.95em;
+    font-weight: 400;
+    color: #5E454B;
+    padding: 0.3em;
+    border: none;
+    border-bottom: 0.12em solid #5E454B;
+    outline: none;
+  }
+  form input:focus {
+    border-color: #A3D2CA;
+  }
+  form input:not(:last-child) {
+    margin-bottom: 0.9em;
+  }
+  form button {
+    font-size: 0.95em;
+    padding: 0.8em 0;
+    border-radius: 2em;
+    border: none;
+    outline: none;
+    background-color: #A3D2CA;
+    color: #5E454B;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    margin-top: 0.8em;
+  }
+  .dog-face {
+    height: 8.5em;
+    width: 9.4em;
+    background-color: #D4A373;
+    border: 0.18em solid #5E454B;
+    border-radius: 4em;
+    position: absolute;
+    top: 2em;
+    margin: auto;
+    left: 0;
+    right: 0;
+  }
+  .ear-l,
+  .ear-r {
+    background-color: #D4A373;
+    height: 3.5em;
+    width: 4em;
+    border: 0.18em solid #5E454B;
+    position: absolute;
+    top: 0.5em;
+  }
+  .ear-l {
+    border-radius: 2em 1em 0 2em;
+    transform: rotate(-15deg);
+    left: 7em;
+  }
+  .ear-r {
+    border-radius: 1em 2em 2em 0;
+    transform: rotate(15deg);
+    right: 7em;
+  }
+  .blush-l,
+  .blush-r {
+    background-color: #F4A5A5;
+    height: 1em;
+    width: 1.37em;
+    border-radius: 50%;
+    position: absolute;
+    top: 5em;
+  }
+  .blush-l {
+    transform: rotate(25deg);
+    left: 1em;
+  }
+  .blush-r {
+    transform: rotate(-25deg);
+    right: 1em;
+  }
+  .eye-l,
+  .eye-r {
+    background-color: #5E454B;
+    height: 1.5em;
+    width: 1.5em;
+    border-radius: 50%;
+    position: absolute;
+    top: 3em;
+  }
+  .eye-l {
+    left: 2em;
+  }
+  .eye-r {
+    right: 2em;
+  }
+  .eyeball-l,
+  .eyeball-r {
+    height: 0.6em;
+    width: 0.6em;
+    background-color: #F5EFE6;
+    border-radius: 50%;
+    position: absolute;
+    left: 0.45em;
+    top: 0.3em;
+    transition: 1s all;
+  }
+  .nose {
+    height: 1.1em;
+    width: 1.1em;
+    background-color: #000000;
+    position: absolute;
+    top: 4.5em;
+    margin: auto;
+    left: 0;
+    right: 0;
+    border-radius: 50%;
+  }
+  .mouth {
+    height: 1.2em;
+    width: 2.5em;
+    border-radius: 0 0 5em 5em;
+    background-color: #8B5E34;
+    position: absolute;
+    top: 5.8em;
+    left: 3.4em;
+  }
+  .mouth:before {
+    content: "";
+    position: absolute;
+    height: 0.6em;
+    width: 0.12em;
+    background-color: #5E454B;
+    top: -0.6em;
+    left: 1.2em;
+  }
+  .paw-l,
+  .paw-r {
+    background-color: #D4A373;
+    height: 3.5em;
+    width: 2.5em;
+    border: 0.18em solid #5E454B;
+    border-radius: 0.6em 0.6em 1em 1em;
+    transition: 1s all;
+    position: absolute;
+    top: 8.4em;
+  }
+  .paw-l {
+    left: 7.5em;
+  }
+  .paw-r {
+    right: 7.5em;
+  }
+  .foot-l,
+  .foot-r {
+    background-color: #D4A373;
+    height: 3.12em;
+    width: 3.12em;
+    border: 0.18em solid #5E454B;
+    border-radius: 2em 2em 1em 1em;
+    position: absolute;
+    top: 26.56em;
+  }
+  .foot-l {
+    left: 10em;
+  }
+  .foot-r {
+    right: 10em;
+  }
+  .foot-l:before,
+  .foot-r:before {
+    position: absolute;
+    content: "";
+    background-color: #F5EFE6;
+    height: 1.37em;
+    width: 1.75em;
+    top: 1.12em;
+    left: 0.55em;
+    border-radius: 1.56em 1.56em 0.6em 0.6em;
+  }
+  .foot-l:after,
+  .foot-r:after {
+    position: absolute;
+    content: "";
+    background-color: #5E454B;
+    height: 0.5em;
+    width: 0.5em;
+    border-radius: 50%;
+    top: 0.31em;
+    left: 1.12em;
+    box-shadow: 0.87em 0.37em #5E454B, -0.87em 0.37em #5E454B;
+  }
+  @media screen and (max-width: 500px) {
+    .container {
+      font-size: 14px;
+    }
+  }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <form method="post">
+        <label for="username">Username:</label>
+        <input type="text" id="username" placeholder="Username here..." name ="username"/>
+        <label for="password">Password:</label>
+        <input type="password" id="password" placeholder="Password here..." name ="password"/>
+        <button>Login</button>
+      </form>
+      <div class="ear-l"></div>
+      <div class="ear-r"></div>
+      <div class="dog-face">
+        <div class="blush-l"></div>
+        <div class="blush-r"></div>
+        <div class="eye-l">
+          <div class="eyeball-l"></div>
+        </div>
+        <div class="eye-r">
+          <div class="eyeball-r"></div>
+        </div>
+        <div class="nose"></div>
+        <div class="mouth"></div>
+      </div>
+      <div class="paw-l"></div>
+      <div class="paw-r"></div>
+      <div class="foot-l"></div>
+      <div class="foot-r"></div>
+    </div>
+    <!-- Script -->
+    <script>
+      let usernameRef = document.getElementById("username");
+let passwordRef = document.getElementById("password");
+let eyeL = document.querySelector(".eyeball-l");
+let eyeR = document.querySelector(".eyeball-r");
+let pawL = document.querySelector(".paw-l");
+let pawR = document.querySelector(".paw-r");
+
+let normalEyeStyle = () => {
+  eyeL.style.cssText = `
+    left: 0.45em;
+    top: 0.3em;
+  `;
+  eyeR.style.cssText = `
+    right: 0.45em;
+    top: 0.3em;
+  `;
+};
+
+let normalPawStyle = () => {
+  pawL.style.cssText = `
+        height: 3.5em;
+        top: 8.4em;
+        left: 7.5em;
+        transform: rotate(0deg);
+    `;
+  pawR.style.cssText = `
+        height: 3.5em;
+        top: 8.4em;
+        right: 7.5em;
+        transform: rotate(0deg)
+    `;
+};
+
+// When clicked on username input
+usernameRef.addEventListener("focus", () => {
+  eyeL.style.cssText = `
+    left: 0.45em;
+    top: 0.1em;  
+  `;
+  eyeR.style.cssText = `
+    right: 0.45em;
+    top: 0.1em;
+  `;
+  normalPawStyle();
+});
+
+// When clicked on password input
+passwordRef.addEventListener("focus", () => {
+  pawL.style.cssText = `
+        height: 7.5em;
+        top: 3.87em;
+        left: 11.75em;
+        transform: rotate(-155deg);    
+    `;
+  pawR.style.cssText = `
+        height: 7.5em;
+        top: 3.87em;
+        right: 11.75em;
+        transform: rotate(155deg);
+    `;
+  normalEyeStyle();
+});
+
+// When clicked outside username and password input
+document.addEventListener("click", (e) => {
+  let clickedElem = e.target;
+  if (clickedElem != usernameRef && clickedElem != passwordRef) {
+    normalEyeStyle();
+    normalPawStyle();
+  }
+});
+
+// Add ear wiggle on form load for cute effect
+window.addEventListener("load", () => {
+  const earL = document.querySelector(".ear-l");
+  const earR = document.querySelector(".ear-r");
+  
+  setTimeout(() => {
+    earL.style.transform = "rotate(-25deg)";
+    earR.style.transform = "rotate(25deg)";
+    
+    setTimeout(() => {
+      earL.style.transform = "rotate(-15deg)";
+      earR.style.transform = "rotate(15deg)";
+    }, 300);
+  }, 500);
+});
+
+// Login validation logic
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.querySelector("form");
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent form submission
+
+    const username = usernameRef.value;
+    const password = passwordRef.value;
+    if (username === "username" && password === "password") {
+            alert("Login successful!");
+
+            // Redirect to profile.html after 1 second
+            setTimeout(function() {
+                window.location.href = "profile.html";
+            }, 1000);
+        } else {
+            alert("Invalid credentials. Please try again.");
+        }
+  });
+});
+    </script>
+  </body>
+</html>

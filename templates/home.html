@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+   * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial;
+}
+
+.wrapper {
+    background-image: url("{{ url_for('static', filename='images/finalimg.jpg') }}");
+    background-size: cover;
+    height: 100vh;
+}
+
+.topnav {
+    overflow: hidden;
+    background-color: #666CB7;
+}
+
+.topnav a {
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.topnav a.active {
+    background-color: #769DD0;
+    color: white;
+}
+
+
+
+
+.center {
+    position: absolute;
+    top: 55%;
+    left: 7%;
+}
+
+.center h1 {
+    color: black;
+    font-size: 120px;
+    font-weight: bold;
+    font-family: Impact;
+}
+
+.center h2 {
+    color: black;
+    font-size: 50px;
+    margin-right: 400px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.center .buttons {
+    margin-left: 10px;
+    text-decoration: none;
+}
+
+.buttons button {
+    color: black;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 40px;
+    font-size: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    text-decoration: none;
+    background-color: #8d9df5;
+    font-family: Arial, sans-serif;
+
+}
+
+.footer {
+    background-color: #fff;
+    padding: 20px;
+    text-align: center;
+    color: #777;
+}
+
+.footer a {
+    text-decoration: none;
+    color: #777;
+    margin: 0 10px;
+}
+
+.buy-button {
+    background-color: #8d9df5;
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.contact-info {
+    margin-bottom: 20px;
+}
+
+.buy-button:hover {
+    padding: 10px;
+    background-color: #769DD0;
+    color: black;
+}
+
+        
+.text-gallery {
+    background-color: #ADB2D4;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-bottom: 20px; 
+}
+
+.text-column {
+    flex: 1;
+}
+
+.text-column h3 {
+    font-size: 24px;
+    color: black;
+    margin-bottom: 10px;
+    text-align: center;
+    margin-right: 15px;
+    font-family: Arial;
+}
+
+.text-column p {
+    color: black;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-right: 15px;
+    font-family: Arial;
+    
+}
+
+.video-container {
+    margin-top: 20px; 
+    margin-left: 20px; 
+}
+
+        
+.video-text {
+    top: 0;
+    margin-left: 500px ;
+    padding: 20px;
+    background-color: #ccc; 
+    border-radius: 10px;
+}
+
+.video-text h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.video-text p {
+    font-size: 16px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+.video-text p {
+    font-size: 16px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+        
+.start-button {
+    background-color: #beedbe;
+    color: black;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 30px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    text-decoration: none;
+}
+
+.start-button:hover {
+    background-color: #7c88d3;
+    color: black; 
+}
+
+.start-now{
+    text-align: center;
+}
+
+.video-section {
+    display: flex;
+    align-items: flex-start;
+    margin: 20px;
+    gap: 5px;
+}
+
+.video-container {
+    margin-top: 0;
+    margin-left: 0;
+    flex: 1;
+}
+
+.video-text {
+    flex: 1;
+    margin-left: 0;
+    padding: 20px;
+    background-color: #ccc;
+    border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class='wrapper'>
+    <div class="topnav">
+        <a class="active" href="/">Home</a>
+        <a href="journal.html">Journaling</a>
+        <a href="game">Games</a>
+        <a href="account">Account</a>
+    </div>
+    <div class='center'>
+        <h1>MoodPath </h1>
+        <h2>Write. Reflect. Heal.</h2>
+        <div class='buttons'>
+            <button><a href="journal.html">Start Now!</a></button>
+        </div>
+    </div>
+</div>
+<div class="video-section">
+    <div class="video-container">
+        <iframe width="700" height="350" src="https://www.youtube.com/embed/MiOVX7qKQ24?si=v_rxt0gp_u_cvboV" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <div class="video-text">
+        <h2>About MoodPath</h2>
+        <p>At MoodPath, we believe that emotions are complex, and sometimes, putting them into words can feel impossible. If you've ever struggled to identify or express how you feel, you're not alone—many people experience alexithymia, a difficulty in recognizing and describing emotions.</p>
+        <p>That's why we created MoodPath—a safe, personal space where you can journal freely. Using sentiment analysis, we gently help you understand your emotional patterns and guide you to one of three therapeutic games, each designed to uplift your mood and bring you a sense of peace.</p>
+        <p>Whether you're feeling overwhelmed, numb, or simply unsure, MoodPath helps you navigate your emotions with kindness. No judgment, no pressure—just a path to better understanding yourself.</p>
+        <div class="start-now">
+            <p>💙 Write. Reflect. Heal. 💙</p>
+            <button class="start-button"><a href="journal.html">Start Now</a></button>
+        </div>
+    </div>
+</div>
+
+<div class="text-gallery">
+    <div class="text-column">
+        <h3>Journaling– Your Safe Space for Self-Expression</h3>
+        <p> Sometimes, the hardest part of emotions is understanding them. Our guided journaling space gives you a private, judgment-free place to unload your thoughts, process your day, and reflect. Whether you write a little or a lot, each entry brings you closer to recognizing patterns in your feelings. Let your words be the first step toward clarity and self-discovery.</p>
+    </div>
+    <div class="text-column">
+        <h3>Games– A Breath of Fresh Air</h3>
+        <p>Sometimes, the best way to feel better is to step outside your thoughts and into a moment of lightness. Based on your journal’s sentiment, we’ll guide you to one of three therapeutic games, each designed to soothe, uplift, or energize. Whether it’s a calming puzzle, a creativity boost, or an engaging challenge, these small moments of play can help bring a little peace and joy back into your day.</p>
+    </div>
+    <div class="text-column">
+        <h3>Sentiment Analysis – Your Silent Listener</h3>
+        <p> Sometimes, emotions feel like a tangled mess—too complex to understand, too overwhelming to express. That’s where our AI-powered sentiment analysis comes in. Think of it as a gentle, non-judgmental listener, helping you uncover the feelings hidden in your words.
+
+            As you journal, our AI carefully reads between the lines, detecting emotions you might not even realize you’re experiencing. Whether you’re feeling stressed, numb, or uncertain, we translate your thoughts into clarity—guiding you toward personalized activities designed to help you relax, reset, and regain control.
+            
+            Because understanding your emotions is the first step to healing. 💙 </p>
+    </div>
+</div>
+
+<div class="footer">
+    <div class='contact-info'>
+        <p1>You're Not Alone. We're Here for You. 💙 If you're feeling overwhelmed or need someone to talk to, support is always within reach. For immediate help, please reach out to a trusted helpline 📞800 4673 </p1> 
+    </div>
+    <div class='buy now'>
+        <a class="buy-button" href="">Contact Us</a>
+    </div>
+</div>
+</body
